@@ -1,0 +1,40 @@
+version: "3"
+services:
+
+  hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+
+
+  chrome:
+    image: selenium/node-chrome:latest
+    depends_on:
+      - hub
+    environment:
+      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_PORT_4444_TCP_PORT: 4444
+      #- HUB_HOST=hub
+      #- HUB_PORT=4444
+
+    volumes:
+      - /dev/shm:/dev/shm
+
+    links:
+      - hub
+
+  firefox:
+    image: selenium/node-firefox:latest
+    depends_on:
+      - hub
+    environment:
+      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_PORT_4444_TCP_PORT: 4444
+      #- HUB_HOST=hub
+      #- HUB_PORT=4444
+      
+    volumes:
+      - /dev/shm:/dev/shm
+    links:
+      - hub
